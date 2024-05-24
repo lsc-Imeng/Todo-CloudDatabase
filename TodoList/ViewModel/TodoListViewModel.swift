@@ -17,8 +17,26 @@ class TodoListViewModel {
     // MARK: Initializer(s)
     init(todos: [TodoItem] = []) {
         self.todos = todos
+        Task {
+                   try await getTodos()
+               }
     }
-    
+    func getTodos() async throws {
+           
+           do {
+               let results: [TodoItem] = try await supabase
+                   .from("todos")
+                   .select()
+                   .execute()
+                   .value
+               
+               self.todos = results
+               
+           } catch {
+               debugPrint(error)
+           }
+           
+       }
     // MARK: Functions
     func createToDo(withTitle title: String) {
         
