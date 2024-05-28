@@ -27,6 +27,7 @@ class TodoListViewModel {
             let results: [TodoItem] = try await supabase
                 .from("todos")
                 .select()
+                .order("id" , ascending: true)
                 .execute()
                 .value
             
